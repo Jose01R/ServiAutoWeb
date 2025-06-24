@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repuestos>
+  <repuesto nombre="Filtro de Aire">
+    <precio>25.5</precio>
+    <cantidad>10</cantidad>
+    <pedido>false</pedido>
+  </repuesto>
+</repuestos>
