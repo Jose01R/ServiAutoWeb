@@ -3,10 +3,8 @@ package sockets;
 import domain.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import service.ClienteService;
+import service.*;
 import org.jdom2.JDOMException;
-import service.DetalleOrdenService;
-import service.OrdenTrabajoService;
 
 import java.util.Map;
 import java.util.Optional;
@@ -18,16 +16,22 @@ public class ProtocolHandler {
 
     // Ruta al archivo XML de clientes
     private static final String CLIENTES_XML_PATH = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\clientes.xml";
-    private static final String DETALLE_ORDEN_XML_PATH = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\detalleOrden.xml";
-    private static final String Orden_Trabajo_XML_PATH = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\ordenTrabajo.xml";
+    private static final String DETALLE_ORDEN_XML_PATH = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\detallesOrden.xml";
+    private static final String ORDEN_Trabajo_XML_PATH = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\ordenesTrabajo.xml";
+    private static final String REPUESTO_XML_PATH  = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\repuestos.xml";
+    private static final String SERVICIO_XML_PATH= "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\servicios.xml";
     private ClienteService clienteService;
     private DetalleOrdenService detalleOrdenService;
     private OrdenTrabajoService ordenTrabajoService;
+    private RepuestoService repuestoService;
+    private ServicioService servicioService;
     public ProtocolHandler() {
         try {
             this.clienteService = new ClienteService(CLIENTES_XML_PATH);
             this.detalleOrdenService = new DetalleOrdenService(DETALLE_ORDEN_XML_PATH);
-            this.ordenTrabajoService = new OrdenTrabajoService(Orden_Trabajo_XML_PATH);
+            this.ordenTrabajoService = new OrdenTrabajoService(ORDEN_Trabajo_XML_PATH);
+            this.repuestoService = new RepuestoService(REPUESTO_XML_PATH);
+            this.servicioService = new ServicioService(SERVICIO_XML_PATH);
         } catch (IOException | JDOMException e) {
             logger.error("Error inicializando ClienteService: {}", e.getMessage());
             this.clienteService = null;
@@ -43,7 +47,7 @@ public class ProtocolHandler {
                     return new Response("200", "Test OK. ProtocolHandler funcionando.", "Hello from server!");
 
                 //--------------Cliente Actions----------------
-                case "insertarCliente": {
+                case "agregarCliente": {
                     if (clienteService == null)
                         return new Response("500", "ClienteService no disponible", null);
                     if (!(request.getData() instanceof Cliente)) {
@@ -250,6 +254,132 @@ public class ProtocolHandler {
                         return new Response("404", "Orden de trabajo no encontrada para eliminar", null);
                     }
                 }
+                //--------------Repuesto Actions----------------
+                case "agregarRepuesto": {
+                    // Implementar lógica para agregar repuestor
+                    if (repuestoService == null)
+                        return new Response("500", "RepuestoService no disponible", null);
+                    if (!(request.getData() instanceof Repuesto)) {
+                        return new Response("400", "Datos de repuesto inválidos", null);
+                    }
+                    Repuesto repuesto = (Repuesto) request.getData();
+
+                    boolean insertado= repuestoService.agregarRepuesto(repuesto);
+                    if (!insertado) {
+                        return new Response("409", "Ya existe un repuesto con ese ID", null);
+                    }
+                    return new Response("200", "Repuesto insertado correctamente", null);
+                }
+                case "obtenerTodosRepuestos": {
+                    if (repuestoService == null)
+                        return new Response("500", "RepuestoService no disponible", null);
+
+                    List<Repuesto> repuestos = repuestoService.obtenerTodosRepuestos();
+                    return new Response("200", "Lista de repuestos", repuestos);
+                }
+                case" buscarRepuestoPorNombre": {
+                    if (repuestoService == null)
+                        return new Response("500", "RepuestoService no disponible", null);
+
+                    String nombre = (String) request.getData();
+                    Optional<Repuesto> repuestoOpt = repuestoService.buscarRepuestoPorNombre(nombre);
+                    if (repuestoOpt.isPresent()) {
+                        return new Response("200", "Repuesto encontrado", repuestoOpt.get());
+                    } else {
+                        return new Response("404", "Repuesto no encontrado", null);
+                    }
+                }
+                case "actualizarRepuesto": {
+                    if (repuestoService == null)
+                        return new Response("500", "RepuestoService no disponible", null);
+
+                    if (!(request.getData() instanceof Repuesto)) {
+                        return new Response("400", "Datos de repuesto inválidos", null);
+                    }
+                    Repuesto repuesto = (Repuesto) request.getData();
+                    boolean actualizado = repuestoService.actualizarRepuesto(repuesto);
+                    if (actualizado) {
+                        return new Response("200", "Repuesto actualizado correctamente", null);
+                    } else {
+                        return new Response("404", "Repuesto no encontrado para actualizar", null);
+                    }
+                }
+                case "eliminarRepuesto": {
+                    if(repuestoService==null){
+                        return new Response("500", "RepuestoService no disponible", null);
+                    }
+                    String nombre= (String)request.getData();
+                    boolean eliminado = repuestoService.eliminarRepuesto(nombre);
+                    if (eliminado) {
+                        return new Response("200", "Repuesto eliminado correctamente", null);
+                    } else {
+                        return new Response("404", "Repuesto no encontrado para eliminar", null);
+                    }
+                }
+                //--------------Servicio Actions----------------
+
+                case "agregarServicio":  {
+                    if (servicioService == null)
+                        return new Response("500", "ServicioService no disponible", null);
+                    if (!(request.getData() instanceof Servicio)) {
+                        return new Response("400", "Datos de servicio inválidos", null);
+                    }
+                    Servicio servicio = (Servicio) request.getData();
+
+                    boolean insertado = servicioService.agregarServicio(servicio);
+                    if (!insertado) {
+                        return new Response("409", "Ya existe un servicio con ese nombre", null);
+                    }
+                    return new Response("200", "Servicio insertado correctamente", null);
+                }
+                case "obtenerTodosServicios": {
+                 if(servicioService==null) return new Response("500","ServicioService no disponible",null);
+
+                 List<Servicio>servicios= servicioService.obtenerTodosServicios();
+                 return new Response("200","List de servicios",servicios);
+                }
+                case "buscarServicioPorNombre": {
+                    if (servicioService == null)
+                        return new Response("500", "ServicioService no disponible", null);
+
+                    String nombre = (String) request.getData();
+                    Optional<Servicio> servicioOpt = servicioService.buscarServicioPorNombre(nombre);
+                    if (servicioOpt.isPresent()) {
+                        return new Response("200", "Servicio encontrado", servicioOpt.get());
+                    } else {
+                        return new Response("404", "Servicio no encontrado", null);
+                    }
+                }
+                case "actualizarServicio": {
+                    if (servicioService == null)
+                        return new Response("500", "ServicioService no disponible", null);
+
+                    if (!(request.getData() instanceof Servicio)) {
+                        return new Response("400", "Datos de servicio inválidos", null);
+                    }
+                    Servicio servicio = (Servicio) request.getData();
+                    boolean actualizado = servicioService.actualizarServicio(servicio);
+                    if (actualizado) {
+                        return new Response("200", "Servicio actualizado correctamente", null);
+                    } else {
+                        return new Response("404", "Servicio no encontrado para actualizar", null);
+                    }
+                }
+                case "eliminarServicio": {
+                    if(servicioService==null){
+                        return new Response("500", "ServicioService no disponible",null);
+                    }
+                    String nombre= (String)request.getData();
+                    boolean eliminado = servicioService.eliminarServicio(nombre);
+                    if(eliminado){
+                        return new Response("200","Servicio eliminado correctamente",null);
+                    }else {
+                        return new Response("404", "Servicio no encontrado", null);
+                    }
+                }
+
+
+                //--------------Default Action----------------
                 default:
                     logger.warn("Acción no reconocida: {}", request.getAction());
                     return new Response("400", "Acción no reconocida: " + request.getAction(), null);

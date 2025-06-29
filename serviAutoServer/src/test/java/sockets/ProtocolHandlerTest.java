@@ -2,6 +2,7 @@ package sockets;
 
 import domain.*;
 import org.junit.jupiter.api.Test;
+import service.ServicioService;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProtocolHandlerTest {
 
     ProtocolHandler protocolHandler = new ProtocolHandler();
+
     @Test
     void test_insertar_cliente_funciona() {
         try (Socket socket = new Socket("192.168.18.61", 5000)) { // Cambia el puerto si es necesario
@@ -22,8 +24,8 @@ class ProtocolHandlerTest {
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
             // Crear cliente de prueba
-            Cliente cliente = new Cliente("123", "Juan", "Perez", "juan@mail.com", "8888-8888","Calle Falsa 123", "5555-5555","jared@gmail.com");
-            Request req = new Request("insertarCliente", cliente);
+            Cliente cliente = new Cliente("123", "Juan", "Perez", "juan@mail.com", "8888-8888", "Calle Falsa 123", "5555-5555", "jared@gmail.com");
+            Request req = new Request("agregarCliente", cliente);
 
             // Enviar request
             out.writeObject(req);
@@ -37,11 +39,12 @@ class ProtocolHandlerTest {
             e.printStackTrace();
         }
     }
+
     @Test
     void insertar_detalleOrden_funciona() {
 
-       // crear el objeto DetalleOrden
-        DetalleOrden detalle = new DetalleOrden("DET001", 22,"bonita", "limpieza", "completado");
+        // crear el objeto DetalleOrden
+        DetalleOrden detalle = new DetalleOrden("DET001", 22, "bonita", "limpieza", "completado");
 
         Map<String, Object> datos = new HashMap<>();
         datos.put("detalleOrden", detalle);
@@ -65,7 +68,7 @@ class ProtocolHandlerTest {
         Date fecha = new Date();
 
         // Crear el objeto OrdenTrabajo
-        OrdenTrabajo orden = new OrdenTrabajo("ORD001","arreglo", fecha, "pendiente");
+        OrdenTrabajo orden = new OrdenTrabajo("ORD001", "arreglo", fecha, "pendiente");
 
         // Armar el Map con datos requeridos por el protocolo
         Map<String, Object> datos = new HashMap<>();
@@ -78,8 +81,54 @@ class ProtocolHandlerTest {
         // Ejecutar el handler
         Response resp = handler.handle(req);
 
-      //assert
+        //assert
         assertEquals("200", resp.getStatus(), "La orden de trabajo debería insertarse correctamente.");
         assertEquals("Orden de trabajo insertada correctamente", resp.getMessage());
+    }
+
+    @Test
+    void test_insertar_repuesto_funciona() {
+        try (Socket socket = new Socket("192.168.18.61", 5000)) { // Cambia el puerto si es necesario
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+            // Crear cliente de prueba
+            Repuesto repuesto = new Repuesto("Llanta", 233, 2, true);
+            Request req = new Request("agregarRepuesto", repuesto);
+
+            // Enviar request
+            out.writeObject(req);
+
+            // Recibir response
+            Response resp = (Response) in.readObject();
+            System.out.println("Código: " + resp.getStatus());
+            System.out.println("Mensaje: " + resp.getMessage());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void test_insertar_servicio_funciona() {
+        try (Socket socket = new Socket("192.168.18.61", 5000)) { // Cambia el puerto si es necesario
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+            // Crear cliente de prueba
+            Servicio servicio = new Servicio("lavado", 100, 3242);
+            Request req = new Request("agregarServicio", servicio);
+
+            // Enviar request
+            out.writeObject(req);
+
+            // Recibir response
+            Response resp = (Response) in.readObject();
+            System.out.println("Código: " + resp.getStatus());
+            System.out.println("Mensaje: " + resp.getMessage());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

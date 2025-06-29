@@ -1,7 +1,9 @@
 package domain;
 
+import java.io.Serializable;
+
 // Class Servicio
-public class Servicio {
+public class Servicio implements Serializable {
     private String nombre;
     private double precio;
     private double costoManoObra;

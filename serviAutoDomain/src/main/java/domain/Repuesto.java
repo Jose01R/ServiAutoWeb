@@ -1,7 +1,9 @@
 package domain;
 
+import java.io.Serializable;
+
 // Class Repuesto
-public class Repuesto {
+public class Repuesto implements Serializable {
     private String nombre;
     private double precio;
     private int cantidad;
