@@ -17,7 +17,7 @@ public class ClienteService {
     }
 
     public void agregarCliente(Cliente cliente) throws IOException {
-        // Aquí puedes agregar validaciones de negocio antes de persistir
+
         if (clienteXmlData != null) {
             clienteXmlData.insertarCliente(cliente);
         }
@@ -32,12 +32,12 @@ public class ClienteService {
     }
 
     public boolean actualizarCliente(Cliente cliente) throws IOException {
-        // Puedes agregar lógica de validación antes de actualizar
+
         return clienteXmlData.actualizarCliente(cliente);
     }
 
     public boolean eliminarCliente(String idCliente) throws IOException {
-        // Puedes validar si el cliente tiene órdenes activas, etc.
+
         return clienteXmlData.eliminarCliente(idCliente);
     }
 }

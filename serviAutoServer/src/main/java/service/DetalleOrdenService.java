@@ -23,7 +23,7 @@ public class DetalleOrdenService {
      */
     public boolean agregarDetalleOrden(DetalleOrden detalleOrden, String idOrdenTrabajo,
                                        String nombreServicio, String nombreRepuesto) throws IOException {
-        // Validación de negocio: no se permite agregar ambos servicio y repuesto
+
         if (nombreServicio != null && nombreRepuesto != null) {
             throw new IllegalArgumentException("Un DetalleOrden no puede tener asociado tanto un Servicio como un Repuesto.");
         }
