@@ -55,7 +55,7 @@ public class ClientePrueba {
             System.out.println("  Data: " + getClienteResponse.getData());
             if (getClienteResponse.getData() instanceof Cliente) {
                 Cliente clienteObtenido = (Cliente) getClienteResponse.getData();
-                System.out.println("  Cliente obtenido: " + clienteObtenido.getNombre() + " (ID: " + clienteObtenido.getIdCliente() + ")");
+                System.out.println("  Cliente obtenido: " + clienteObtenido.getNombre() + " (ID: " + clienteObtenido.getIdentificacion() + ")");
             } else {
                 System.out.println("  No se obtuvo un objeto Cliente."); //esperado
             }

@@ -111,24 +111,6 @@ public class ClienteXmlData {
         guardar();
     }
 
-    private int getNextCod(){
-        List<Element> eListaClientes = raiz.getChildren(CLIENTE_ELEMENT_NAME);
-        int maxId = 0;
-        for (Element eCliente : eListaClientes) {
-            String idStr = eCliente.getAttributeValue("idCliente");
-            if (idStr != null) {
-                try {
-                    int id = Integer.parseInt(idStr);
-                    if (id > maxId) {
-                        maxId = id;
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Error al convertir el ID del cliente: " + idStr);
-                }
-            }
-        }
-        return maxId + 1; // Retorna el siguiente ID disponible
-    }
     /**
      * Obtiene una lista de todos los clientes en el documento XML.
      * @return Una lista de objetos Cliente.
@@ -208,4 +190,3 @@ public class ClienteXmlData {
         return false;
     }
 }
-

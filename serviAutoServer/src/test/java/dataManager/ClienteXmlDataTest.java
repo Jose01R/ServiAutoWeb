@@ -33,15 +33,17 @@ public class ClienteXmlDataTest {
     void tearDown() {
         // Eliminar el archivo XML después de cada test
         File file = new File(TEST_XML_FILE);
-        if (file.exists()) {
-            file.delete();
+       if (file.exists()) {
+           file.delete();
         }
     }
 
     @Test
     void testInsertarCliente() throws IOException {
         Cliente cliente = new Cliente("C001", "Juan", "Perez", "Gomez", "1234567", "7890123", "Calle Falsa 123", "juan@example.com");
+        Cliente cliente2 = new Cliente("C002", "Juan", "Perez", "Gomez", "1234567", "7890123", "Calle Falsa 123", "juan@example.com");
         clienteXmlData.insertarCliente(cliente);
+        clienteXmlData.insertarCliente(cliente2);
 
         Optional<Cliente> foundCliente = clienteXmlData.getClientePorId("C001");
         assertTrue(foundCliente.isPresent(), "El cliente insertado debería ser encontrado.");
