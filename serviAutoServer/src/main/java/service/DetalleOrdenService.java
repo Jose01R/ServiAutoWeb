@@ -1,4 +1,4 @@
-package com.serviautoweb.api.service;
+package service;
 
 
 import dataManager.DetalleOrdenXmlData;
@@ -13,8 +13,8 @@ public class DetalleOrdenService {
     private final DetalleOrdenXmlData detalleOrdenXmlData;
 
     // Constructor que recibe la ruta del archivo XML
-    public DetalleOrdenService() throws IOException, JDOMException {
-        this.detalleOrdenXmlData = DetalleOrdenXmlData.abrirDocumento("WEB-INF/detallesOrden.xml");
+    public DetalleOrdenService(String rutaArchivo) throws IOException, JDOMException {
+        this.detalleOrdenXmlData = DetalleOrdenXmlData.abrirDocumento(rutaArchivo);
     }
 
     /**

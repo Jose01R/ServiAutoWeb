@@ -12,8 +12,8 @@ public class ClienteService {
     private final ClienteXmlData clienteXmlData;
 
     // Constructor que recibe la ruta del archivo XML
-    public ClienteService() throws IOException, JDOMException {
-        this.clienteXmlData = ClienteXmlData.abrirDocumento("WEB-INF/clientes.xml");
+    public ClienteService(String rutaArchivo) throws IOException, JDOMException {
+        this.clienteXmlData = ClienteXmlData.abrirDocumento(rutaArchivo);
     }
 
     public void agregarCliente(Cliente cliente) throws IOException {

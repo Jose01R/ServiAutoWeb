@@ -1,4 +1,4 @@
-package com.serviautoweb.api.service;
+package service;
 
 
 import dataManager.VehiculoXmlData;
@@ -13,8 +13,8 @@ public class VehiculoService {
     private final VehiculoXmlData vehiculoXmlData;
 
     // Constructor que recibe la ruta del archivo XML
-    public VehiculoService() throws IOException, JDOMException {
-        this.vehiculoXmlData = VehiculoXmlData.abrirDocumento("WEB-INF/vehiculos.xml");
+    public VehiculoService(String rutaArchivo) throws IOException, JDOMException {
+        this.vehiculoXmlData = VehiculoXmlData.abrirDocumento(rutaArchivo);
     }
 
     /**

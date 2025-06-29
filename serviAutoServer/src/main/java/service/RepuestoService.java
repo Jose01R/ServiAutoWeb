@@ -1,4 +1,4 @@
-package com.serviautoweb.api.service;
+package service;
 
 
 import dataManager.RepuestoXmlData;
@@ -13,8 +13,8 @@ public class RepuestoService {
     private final RepuestoXmlData repuestoXmlData;
 
     // Constructor que recibe la ruta del archivo XML
-    public RepuestoService() throws IOException, JDOMException {
-        this.repuestoXmlData = RepuestoXmlData.abrirDocumento("WEB-INF/repuestos.xml");
+    public RepuestoService(String rutaArchivo) throws IOException, JDOMException {
+        this.repuestoXmlData = RepuestoXmlData.abrirDocumento(rutaArchivo);
     }
 
     /**
