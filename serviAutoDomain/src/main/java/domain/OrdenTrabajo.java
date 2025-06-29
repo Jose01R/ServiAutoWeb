@@ -1,10 +1,11 @@
 package domain;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 // Class OrdenTrabajo
-public class OrdenTrabajo {
+public class OrdenTrabajo implements Serializable {
     private String idOrdenTrabajo;
     private String descripcionSolicitud;
     private Date fechaIngreso;

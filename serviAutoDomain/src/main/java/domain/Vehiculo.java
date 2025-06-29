@@ -1,9 +1,10 @@
 package domain;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 // Class Vehiculo
-public class Vehiculo {
+public class Vehiculo implements Serializable {
     private String placa;
     private String color;
     private String marca;

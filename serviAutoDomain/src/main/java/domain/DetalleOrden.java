@@ -1,7 +1,9 @@
 package domain;
 
+import java.io.Serializable;
+
 // Class DetalleOrden
-public class DetalleOrden {
+public class DetalleOrden implements Serializable {
     private String idDetalleOrden;
     private int cantidad;
     private String observaciones;

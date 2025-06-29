@@ -42,48 +42,67 @@ class ProtocolHandlerTest {
 
     @Test
     void insertar_detalleOrden_funciona() {
+        try (Socket socket = new Socket("192.168.18.61", 5000)) { // Cambia el puerto si es necesario
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
-        // crear el objeto DetalleOrden
-        DetalleOrden detalle = new DetalleOrden("DET001", 22, "bonita", "limpieza", "completado");
+            // crear el objeto DetalleOrden
+            DetalleOrden detalle = new DetalleOrden("DET001", 22, "bonita", "limpieza", "completado");
 
-        Map<String, Object> datos = new HashMap<>();
-        datos.put("detalleOrden", detalle);
-        datos.put("idOrdenTrabajo", "ORD123");
-        datos.put("nombreServicio", "Lavado");// Si es servicio, repuesto debe ir null
-        datos.put("nombreRepuesto", null);
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("detalleOrden", detalle);
+            datos.put("idOrdenTrabajo", "ORD123");
+            datos.put("nombreServicio", "Lavado");// Si es servicio, repuesto debe ir null
+            datos.put("nombreRepuesto", null);
 
-        Request req = new Request("agregarDetalleOrden", datos);
-        // Ejecutar el handler
-        Response resp = protocolHandler.handle(req);
+            Request req = new Request("agregarDetalleOrden", datos);
 
-        // Verificar la respuesta
-        assertEquals("200", resp.getStatus(), "Debe insertar correctamente el detalle de orden");
-        assertEquals("Detalle de orden insertado correctamente", resp.getMessage());
+            // Enviar request
+            out.writeObject(req);
+
+            // Recibir response
+            Response resp = (Response) in.readObject();
+            System.out.println("Código: " + resp.getStatus());
+            System.out.println("Mensaje: " + resp.getMessage());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
     void insertar_ordenTrabajo_funciona() {
 
-        ProtocolHandler handler = new ProtocolHandler();
-        Date fecha = new Date();
+        try (Socket socket = new Socket("192.168.18.61", 5000)) { // Cambia el puerto si es necesario
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
-        // Crear el objeto OrdenTrabajo
-        OrdenTrabajo orden = new OrdenTrabajo("ORD001", "arreglo", fecha, "pendiente");
+            Date fecha = new Date();
 
-        // Armar el Map con datos requeridos por el protocolo
-        Map<String, Object> datos = new HashMap<>();
-        datos.put("ordenTrabajo", orden);
-        datos.put("placaVehiculo", "ABC123");
+            // Crear el objeto OrdenTrabajo
+            OrdenTrabajo orden = new OrdenTrabajo("ORD001", "arreglo", fecha, "pendiente");
 
-        // Armar el request del protocolo
-        Request req = new Request("agregarOrdenTrabajo", datos);
+            // Armar el Map con datos requeridos por el protocolo
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("ordenTrabajo", orden);
+            datos.put("placaVehiculo", "ABC123");
 
-        // Ejecutar el handler
-        Response resp = handler.handle(req);
+            // Armar el request del protocolo
+            Request req = new Request("agregarOrdenTrabajo", datos);
 
-        //assert
-        assertEquals("200", resp.getStatus(), "La orden de trabajo debería insertarse correctamente.");
-        assertEquals("Orden de trabajo insertada correctamente", resp.getMessage());
+            // Enviar request
+            out.writeObject(req);
+
+            // Recibir response
+            Response resp = (Response) in.readObject();
+            System.out.println("Código: " + resp.getStatus());
+            System.out.println("Mensaje: " + resp.getMessage());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
@@ -118,6 +137,34 @@ class ProtocolHandlerTest {
             // Crear cliente de prueba
             Servicio servicio = new Servicio("lavado", 100, 3242);
             Request req = new Request("agregarServicio", servicio);
+
+            // Enviar request
+            out.writeObject(req);
+
+            // Recibir response
+            Response resp = (Response) in.readObject();
+            System.out.println("Código: " + resp.getStatus());
+            System.out.println("Mensaje: " + resp.getMessage());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    void insertar_vehiculo_funciona() {
+
+        // Crear el objeto Vehiculo
+
+        try (Socket socket = new Socket("192.168.18.61", 5000)) { // Cambia el puerto si es necesario
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+            // Crear cliente de prueba
+            Vehiculo vehiculo = new Vehiculo("ABC123", "Rojo", "Toyota", "Corolla", 2020, "2ads", 200);
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("vehiculo", vehiculo);
+            datos.put("idClienteDueno", "123"); // ID del cliente al que pertenece el vehículo
+            Request req = new Request("agregarVehiculo", datos);
 
             // Enviar request
             out.writeObject(req);

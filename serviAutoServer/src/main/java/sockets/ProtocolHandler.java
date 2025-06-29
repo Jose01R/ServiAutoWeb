@@ -20,11 +20,13 @@ public class ProtocolHandler {
     private static final String ORDEN_Trabajo_XML_PATH = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\ordenesTrabajo.xml";
     private static final String REPUESTO_XML_PATH  = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\repuestos.xml";
     private static final String SERVICIO_XML_PATH= "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\servicios.xml";
+    private static final String VEHICULO_XML_PATH= "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\vehiculos.xml";
     private ClienteService clienteService;
     private DetalleOrdenService detalleOrdenService;
     private OrdenTrabajoService ordenTrabajoService;
     private RepuestoService repuestoService;
     private ServicioService servicioService;
+    private VehiculoService vehiculoService;
     public ProtocolHandler() {
         try {
             this.clienteService = new ClienteService(CLIENTES_XML_PATH);
@@ -32,6 +34,7 @@ public class ProtocolHandler {
             this.ordenTrabajoService = new OrdenTrabajoService(ORDEN_Trabajo_XML_PATH);
             this.repuestoService = new RepuestoService(REPUESTO_XML_PATH);
             this.servicioService = new ServicioService(SERVICIO_XML_PATH);
+            this.vehiculoService = new VehiculoService(VEHICULO_XML_PATH);
         } catch (IOException | JDOMException e) {
             logger.error("Error inicializando ClienteService: {}", e.getMessage());
             this.clienteService = null;
@@ -377,8 +380,71 @@ public class ProtocolHandler {
                         return new Response("404", "Servicio no encontrado", null);
                     }
                 }
+                //--------------Vehiculo Actions----------------
+                case "agregarVehiculo":{
+                    if(vehiculoService == null)
+                        return new Response("500", "VehiculoService no disponible", null);
 
+                    // Se espera un Map o clase auxiliar con los datos necesarios
+                    if (!(request.getData() instanceof Map)) {
+                        return new Response("400", "Datos para detalle de orden inválidos", null);
+                    }
+                    Map<String, Object> datos = (Map<String, Object>) request.getData();
+                    Vehiculo vehiculo = (Vehiculo) datos.get("vehiculo");
+                    String idClienteDueno=(String)datos.get("idClienteDueno");
+                    boolean insertado= vehiculoService.agregarVehiculo(vehiculo,idClienteDueno);
+                    if(insertado){
+                        return new Response("200", "Vehículo insertado correctamente", null);
+                    }else {
+                        return new Response("409", "Ya existe un vehículo con esa placa", null);
+                    }
+                }
+                case"obtenerTodosVehiculos":{
+                    if(vehiculoService == null)return  new Response("500", "VehiculoService no disponible", null);
 
+                    List<Vehiculo>vehiculos= vehiculoService.obtenerTodosVehiculos();
+                    return new Response("200","List de vehiculos",vehiculos);
+                }
+                case "obtenerVehiculoPorPlaca":{
+                    if(vehiculoService == null)
+                        return new Response("500", "VehiculoService no disponible", null);
+
+                    String placa= (String) request.getData();
+                    Optional<Vehiculo> vehiculoOpt = vehiculoService.buscarVehiculoPorPlaca(placa);
+                    if(vehiculoOpt.isPresent()){
+                        return new Response("200","Vehículo encontrado",vehiculoOpt.get());
+                    }else {
+                        return new Response("404", "Vehículo no encontrado", null);
+                    }
+                }
+
+                case "actualizarVehiculo": {
+                    if (vehiculoService == null)
+                        return new Response("500", "VehiculoService no disponible", null);
+
+                    if (!(request.getData() instanceof Vehiculo)) {
+                        return new Response("400", "Datos de vehículo inválidos", null);
+                    }
+                    Vehiculo vehiculo = (Vehiculo) request.getData();
+                    boolean actualizado = vehiculoService.actualizarVehiculo(vehiculo);
+                    if (actualizado) {
+                        return new Response("200", "Vehículo actualizado correctamente", null);
+                    } else {
+                        return new Response("404", "Vehículo no encontrado para actualizar", null);
+                    }
+                }
+                case "eliminarVehiculo": {
+                    if(vehiculoService==null){
+                        return new Response("500", "VehiculoService no disponible", null);
+                    }
+                    String placa= (String)request.getData();
+                    boolean eliminado = vehiculoService.eliminarVehiculo(placa);
+                    if(eliminado){
+                        return new Response("200","Vehículo eliminado correctamente",null);
+                    }else {
+                        return new Response("404", "Vehículo no encontrado para eliminar", null);
+                    }
+                }
                 //--------------Default Action----------------
                 default:
                     logger.warn("Acción no reconocida: {}", request.getAction());
