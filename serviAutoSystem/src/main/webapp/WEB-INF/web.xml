@@ -17,6 +17,14 @@
         <servlet-name>MenuServlet</servlet-name>
         <url-pattern>/MenuServlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>VehiculoServlet</servlet-name>
+        <servlet-class>servlet.VehiculoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VehiculoServlet</servlet-name>
+        <url-pattern>/VehiculoServlet</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>MenuServlet</welcome-file>
     </welcome-file-list>

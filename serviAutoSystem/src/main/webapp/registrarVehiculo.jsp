@@ -1,3 +1,5 @@
+<%@ page import="java.util.List" %>
+<%@ page import="domain.Cliente" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -42,6 +44,22 @@
       text-align: center;
       font-weight: bold;
     }
+    .combo-clientes {
+      width: 100%;
+      padding: 14px 12px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: 1.5px solid #27ae60;
+      background-color: #f8fdfb;
+      box-shadow: 0 2px 6px rgba(39,174,96,0.08);
+      margin-bottom: 18px;
+      transition: border-color 0.2s;
+    }
+    .combo-clientes:focus {
+      border-color: #219150;
+      outline: none;
+      background-color: #eafaf1;
+    }
   </style>
 </head>
 <body>
@@ -75,8 +93,21 @@
   <label for="cilindraje">Cilindraje:</label>
   <input type="number" step="0.1" name="cilindraje" required min="0" />
 
-  <label for="idClienteDueno">ID del Cliente Dueño:</label>
-  <input type="text" name="idClienteDueno" required />
+  <label for="idClienteDueno">Cliente Dueño:</label>
+  <select name="idClienteDueno" required class="combo-clientes">
+    <option value="">Seleccione un cliente</option>
+    <%
+      List clientes = (List) request.getAttribute("listaClientes");
+      if (clientes != null) {
+        for (Object obj : clientes) {
+          Cliente cliente = (Cliente) obj;
+    %>
+    <option value="<%= cliente.getIdCliente() %>"><%= cliente.getNombre() %> (<%= cliente.getIdCliente() %>)</option>
+    <%
+        }
+      }
+    %>
+  </select>
 
   <input type="submit" class="button" value="Registrar Vehículo" />
 </form>

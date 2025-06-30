@@ -23,9 +23,6 @@ import java.io.PrintWriter;
  */
 public class ClienteServlet extends HttpServlet {
 
-
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -52,7 +49,7 @@ public class ClienteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // 1. Leer parámetros del formulario
+
         String idCliente = request.getParameter("idCliente");
         String nombre = request.getParameter("nombre");
         String apellido1 = request.getParameter("apellido1");
@@ -61,15 +58,14 @@ public class ClienteServlet extends HttpServlet {
         String celular = request.getParameter("celular");
         String direccion = request.getParameter("direccion");
         String email = request.getParameter("email");
-
-        // 2. Crear objeto Cliente
+        //  Crear objeto Cliente
         Cliente cliente = new Cliente(idCliente, nombre, apellido1, apellido2, telefono, celular, direccion, email);
 
-        // 3. Crear Request y enviar al servidor
+        // Crear Request y enviar al servidor
         Request req = new Request("agregarCliente", cliente);
         Response serverResp = ClienteSocketUtil.enviarRequestAlServidor(req);
 
-        // 4. Procesar respuesta y reenviar a JSP
+        //Procesar respuesta y reenviar a JSP
         request.setAttribute("mensaje", serverResp.getMessage());
         request.getRequestDispatcher("registrarCliente.jsp").forward(request, response);
     }
