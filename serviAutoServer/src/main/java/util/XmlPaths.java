@@ -4,10 +4,10 @@ public class XmlPaths {
     // Ruta base donde se almacenarán todos los archivos XML
 
     //RUTA JARED
-    //private static final String BASE_PATH = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\";
+    private static final String BASE_PATH = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\";
 
     //RUTA JOSE
-    private static final String BASE_PATH = "C:\\Users\\PC\\Documents\\UCR\\Progra_II\\PROYECTO_II\\";
+    //private static final String BASE_PATH = "IC:\\Users\\PC\\Documents\\UCR\\Progra_I\\PROYECTO_II\\";
 
     //RUTA ALEX
     //private static final String BASE_PATH = "C:\\Users\\PC\\Documents\\UCR\\Progra_II\\PROYECTO_II\\";
