@@ -28,6 +28,18 @@
       margin-top: 20px; width: 100%; background: #2596ff; color: #fff; border: none;
       padding: 10px; border-radius: 4px; font-size: 1em; font-weight: bold; cursor: pointer;
     }
+    .btn-cancelar {
+      margin-top: 10px;
+      width: 100%;
+      background: #e74c3c;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -51,6 +63,7 @@
     <label>Email:</label>
     <input type="email" name="email" value="<%= cliente.getEmail() %>" required/>
     <button class="btn-guardar" type="submit">Guardar Cambios</button>
+    <button type="button" class="btn-cancelar" onclick="window.location.href='ModificarClienteServlet'">Cancelar</button>
   </form>
 </div>
 </body>

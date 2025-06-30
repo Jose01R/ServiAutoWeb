@@ -42,6 +42,23 @@
         <servlet-name>ModificarClienteServlet</servlet-name>
         <url-pattern>/ModificarClienteServlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>SeleccionAccionVehiculoServlet</servlet-name>
+        <servlet-class>servlet.SeleccionAccionVehiculoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SeleccionAccionVehiculoServlet</servlet-name>
+        <url-pattern>/SeleccionAccionVehiculoServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ModificarEliminarVehiculoServlet</servlet-name>
+        <servlet-class>servlet.ModificarEliminarVehiculoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ModificarEliminarVehiculoServlet</servlet-name>
+        <url-pattern>/ModificarEliminarVehiculoServlet</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>MenuServlet</welcome-file>
     </welcome-file-list>

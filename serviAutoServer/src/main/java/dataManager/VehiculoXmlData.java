@@ -7,6 +7,7 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+import util.XmlPaths;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -85,25 +86,30 @@ public class VehiculoXmlData {
      * Obtiene una lista de todos los vehículos en el documento XML.
      * @return Una lista de objetos Vehiculo.
      */
+
     public List<Vehiculo> getTodosVehiculos() {
         List<Element> eListaVehiculos = raiz.getChildren(VEHICULO_ELEMENT_NAME);
         List<Vehiculo> vehiculos = new ArrayList<>();
-        // En un escenario real, necesitarías un ClienteXmlData para cargar el objeto Cliente
-        // ClienteXmlData clienteData = ClienteXmlData.abrirDocumento("ruta/clientes.xml");
-        for (Element eVehiculo : eListaVehiculos) {
-            Vehiculo vehiculoActual = new Vehiculo(
-                    eVehiculo.getAttributeValue("placa"),
-                    eVehiculo.getChildText("color"),
-                    eVehiculo.getChildText("marca"),
-                    eVehiculo.getChildText("estilo"),
-                    Integer.parseInt(eVehiculo.getChildText("anio")),
-                    eVehiculo.getChildText("vin"),
-                    Double.parseDouble(eVehiculo.getChildText("cilindraje"))
-            );
-            // Asignar el dueño (Cliente) - esto implicaría cargar el cliente por su ID
-            // String idClienteDueno = eVehiculo.getAttributeValue("idClienteDueno");
-            // clienteData.getClientePorId(idClienteDueno).ifPresent(vehiculoActual::setDueno);
-            vehiculos.add(vehiculoActual);
+        try {
+            ClienteXmlData clienteData = ClienteXmlData.abrirDocumento(XmlPaths.getClientesPath());
+            for (Element eVehiculo : eListaVehiculos) {
+                Vehiculo vehiculoActual = new Vehiculo(
+                        eVehiculo.getAttributeValue("placa"),
+                        eVehiculo.getChildText("color"),
+                        eVehiculo.getChildText("marca"),
+                        eVehiculo.getChildText("estilo"),
+                        Integer.parseInt(eVehiculo.getChildText("anio")),
+                        eVehiculo.getChildText("vin"),
+                        Double.parseDouble(eVehiculo.getChildText("cilindraje"))
+                );
+                String idClienteDueno = eVehiculo.getAttributeValue("idClienteDueno");
+                if (idClienteDueno != null) {
+                    clienteData.getClientePorId(idClienteDueno).ifPresent(vehiculoActual::setDueno);
+                }
+                vehiculos.add(vehiculoActual);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return vehiculos;
     }
