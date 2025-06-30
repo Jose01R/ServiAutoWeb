@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import service.*;
 import org.jdom2.JDOMException;
+import util.XmlPaths;
 
 import java.util.Map;
 import java.util.Optional;
@@ -15,12 +16,13 @@ public class ProtocolHandler {
     private static final Logger logger = LogManager.getLogger(ProtocolHandler.class);
 
     // Ruta al archivo XML de clientes
-    private static final String CLIENTES_XML_PATH = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\clientes.xml";
-    private static final String DETALLE_ORDEN_XML_PATH = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\detallesOrden.xml";
-    private static final String ORDEN_Trabajo_XML_PATH = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\ordenesTrabajo.xml";
-    private static final String REPUESTO_XML_PATH  = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\repuestos.xml";
-    private static final String SERVICIO_XML_PATH= "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\servicios.xml";
-    private static final String VEHICULO_XML_PATH= "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\vehiculos.xml";
+//    private static final String CLIENTES_XML_PATH = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\clientes.xml";
+//    private static final String DETALLE_ORDEN_XML_PATH = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\detallesOrden.xml";
+//    private static final String ORDEN_Trabajo_XML_PATH = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\ordenesTrabajo.xml";
+//    private static final String REPUESTO_XML_PATH  = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\repuestos.xml";
+//    private static final String SERVICIO_XML_PATH= "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\servicios.xml";
+//    private static final String VEHICULO_XML_PATH= "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\vehiculos.xml";
+
     private ClienteService clienteService;
     private DetalleOrdenService detalleOrdenService;
     private OrdenTrabajoService ordenTrabajoService;
@@ -29,13 +31,14 @@ public class ProtocolHandler {
     private VehiculoService vehiculoService;
     public ProtocolHandler() {
         try {
-            this.clienteService = new ClienteService(CLIENTES_XML_PATH);
-            this.detalleOrdenService = new DetalleOrdenService(DETALLE_ORDEN_XML_PATH);
-            this.ordenTrabajoService = new OrdenTrabajoService(ORDEN_Trabajo_XML_PATH);
-            this.repuestoService = new RepuestoService(REPUESTO_XML_PATH);
-            this.servicioService = new ServicioService(SERVICIO_XML_PATH);
-            this.vehiculoService = new VehiculoService(VEHICULO_XML_PATH);
-        } catch (IOException | JDOMException e) {
+            this.clienteService = new ClienteService(XmlPaths.getClientesPath());
+            this.detalleOrdenService = new DetalleOrdenService(XmlPaths.getDetalleOrdenPath());
+            this.ordenTrabajoService = new OrdenTrabajoService(XmlPaths.getOrdenTrabajoPath());
+            this.repuestoService = new RepuestoService(XmlPaths.getRepuestoPath());
+            this.servicioService = new ServicioService(XmlPaths.getServicioPath());
+            this.vehiculoService = new VehiculoService(XmlPaths.getVehiculoPath());
+        }
+        catch (IOException | JDOMException e) {
             logger.error("Error inicializando ClienteService: {}", e.getMessage());
             this.clienteService = null;
         }
