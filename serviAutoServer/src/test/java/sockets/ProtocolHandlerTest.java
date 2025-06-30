@@ -19,7 +19,7 @@ class ProtocolHandlerTest {
 
     @Test
     void test_insertar_cliente_funciona() {
-        try (Socket socket = new Socket("192.168.18.61", 5000)) { // Cambia el puerto si es necesario
+        try (Socket socket = new Socket("192.168.1.174", 5000)) { // Cambia el puerto si es necesario
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
