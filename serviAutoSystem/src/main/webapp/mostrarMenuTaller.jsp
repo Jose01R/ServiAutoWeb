@@ -84,7 +84,7 @@
 <div class="center-container">
     <div class="main-title">Menú Principal</div>
     <div class="menu-grid">
-        <a href="ClienteServlet" class="menu-item">Cliente</a>
+        <a href="SeleccionAccionClienteServlet" class="menu-item">Cliente</a>
         <a href="VehiculoServlet" class="menu-item">Vehículo</a>
         <a href="OrdenTrabajoServlet" class="menu-item">Orden de Trabajo</a>
         <a href="DetalleOrdenServlet" class="menu-item right-bottom">Detalles, Servicios y Repuestos</a>

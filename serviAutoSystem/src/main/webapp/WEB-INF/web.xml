@@ -25,6 +25,23 @@
         <servlet-name>VehiculoServlet</servlet-name>
         <url-pattern>/VehiculoServlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>SeleccionAccionClienteServlet</servlet-name>
+        <servlet-class>servlet.SeleccionAccionClienteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SeleccionAccionClienteServlet</servlet-name>
+        <url-pattern>/SeleccionAccionClienteServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ModificarClienteServlet</servlet-name>
+        <servlet-class>servlet.ModificarClienteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ModificarClienteServlet</servlet-name>
+        <url-pattern>/ModificarClienteServlet</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>MenuServlet</welcome-file>
     </welcome-file-list>
