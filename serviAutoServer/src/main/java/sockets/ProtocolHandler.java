@@ -283,15 +283,21 @@ public class ProtocolHandler {
                     List<Repuesto> repuestos = repuestoService.obtenerTodosRepuestos();
                     return new Response("200", "Lista de repuestos", repuestos);
                 }
-                case" buscarRepuestoPorNombre": {
-                    if (repuestoService == null)
+                case "buscarRepuestoPorNombre": {
+                    if (repuestoService == null) {
+                        logger.error("RepuestoService no disponible");
                         return new Response("500", "RepuestoService no disponible", null);
+                    }
 
                     String nombre = (String) request.getData();
+                    logger.debug("Buscando repuesto con nombre: {}", nombre);
+
                     Optional<Repuesto> repuestoOpt = repuestoService.buscarRepuestoPorNombre(nombre);
                     if (repuestoOpt.isPresent()) {
+                        logger.debug("Repuesto encontrado: {}", repuestoOpt.get());
                         return new Response("200", "Repuesto encontrado", repuestoOpt.get());
                     } else {
+                        logger.warn("Repuesto no encontrado con nombre: {}", nombre);
                         return new Response("404", "Repuesto no encontrado", null);
                     }
                 }

@@ -14,8 +14,10 @@ public class ModificarClienteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idCliente = req.getParameter("idCliente");
+        String searchQuery = req.getParameter("searchQuery");
+
         if (idCliente != null) {
-            // Cargar datos del cliente para modificar
+            // Lógica existente para cargar un cliente específico
             Request request = new Request("buscarClientePorId", idCliente);
             Response response = ClienteSocketUtil.enviarRequestAlServidor(request);
             if ("200".equals(response.getStatus())) {
@@ -23,17 +25,30 @@ public class ModificarClienteServlet extends HttpServlet {
                 req.getRequestDispatcher("actualizarCliente.jsp").forward(req, resp);
                 return;
             } else {
-                // Si no se encuentra, vuelve a la lista
                 resp.sendRedirect("ModificarClienteServlet");
                 return;
             }
         }
-        // Mostrar la lista de clientes
-        Request request = new Request("obtenerTodosClientes", null);
-        Response response = ClienteSocketUtil.enviarRequestAlServidor(request);
-        if ("200".equals(response.getStatus())) {
-            req.setAttribute("listaClientes", response.getData());
+
+        // Manejar la búsqueda
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            Request request = new Request("buscarClientes", searchQuery.trim());
+            Response response = ClienteSocketUtil.enviarRequestAlServidor(request);
+            if ("200".equals(response.getStatus())) {
+                req.setAttribute("listaClientes", response.getData());
+                req.setAttribute("searchQuery", searchQuery); // Mantener el término de búsqueda
+            } else {
+                req.setAttribute("mensaje", "No se encontraron resultados para la búsqueda");
+            }
+        } else {
+            // Si no hay búsqueda, mostrar todos los clientes
+            Request request = new Request("obtenerTodosClientes", null);
+            Response response = ClienteSocketUtil.enviarRequestAlServidor(request);
+            if ("200".equals(response.getStatus())) {
+                req.setAttribute("listaClientes", response.getData());
+            }
         }
+
         req.getRequestDispatcher("modificarClientes.jsp").forward(req, resp);
     }
 

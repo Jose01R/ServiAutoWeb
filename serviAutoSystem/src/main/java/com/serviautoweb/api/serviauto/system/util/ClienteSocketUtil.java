@@ -10,7 +10,7 @@ import java.net.Socket;
 public class ClienteSocketUtil {
     public static Response enviarRequestAlServidor(Request req) {
         try (
-                Socket socket = new Socket("192.168.18.61", 5000); // IP y puerto del servidor
+                Socket socket = new Socket("192.168.1.174", 5000); // IP y puerto del servidor
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream())
         ) {

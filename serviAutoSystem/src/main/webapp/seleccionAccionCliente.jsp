@@ -1,24 +1,41 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: XT
-  Date: 30/06/2025
-  Time: 02:14 p. m.
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <title>Menú Clientes</title>
+  <title>Gestión de Clientes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
+    /* Variables CSS para reutilizar colores */
+    :root {
+      --primary-light: #6dd5ed;
+      --primary-dark: #2193b0;
+      --accent-light: #e0eafc;
+      --accent-dark: #cfdef3;
+      --text-dark: #37526c;
+      --text-light: #ffffff;
+      --bg-white: rgba(255, 255, 255, 0.97);
+      --border-color: #b7cbe3;
+      --shadow-light: rgba(55, 82, 108, 0.10);
+      --button-shadow-color: rgba(33,147,176,0.10);
+      --title-shadow-color: rgba(211, 224, 232, 0.8);
+      --secondary-button-bg: #f0f4f8;
+      --secondary-button-text: var(--text-dark);
+      --secondary-button-border: var(--border-color);
+      --secondary-button-shadow: rgba(0,0,0,0.08);
+      --secondary-button-hover-bg: #e6edf3;
+      --secondary-button-hover-shadow: rgba(0,0,0,0.12);
+    }
+
     body {
       margin: 0;
-      padding: 0;
+      padding: 20px; /* Añadido padding para mejorar espaciado en móviles */
       min-height: 100vh;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent-dark) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden; /* Previene el scroll si el contenido es más pequeño que la vista */
     }
     .center-container {
       display: flex;
@@ -26,60 +43,193 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      width: 100vw;
+      width: 100%; /* Ajustado a 100% para mejor responsividad */
+      padding: 20px;
+      box-sizing: border-box;
     }
     .main-title {
-      font-size: 2.3em;
-      font-weight: bold;
-      color: #37526c;
-      margin-bottom: 38px;
-      letter-spacing: 1px;
-      text-shadow: 0 2px 8px #d3e0e8;
+      font-size: 3em; /* Más grande y prominente */
+      font-weight: 800; /* Más peso */
+      color: var(--text-dark);
+      margin-bottom: 60px; /* Más espacio debajo */
+      letter-spacing: 2px;
+      text-shadow: 0 5px 15px var(--title-shadow-color); /* Sombra más suave */
+      text-align: center;
+      animation: fadeInDown 0.8s ease-out;
     }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .menu-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr;
-      gap: 35px 40px;
-      width: 420px;
-      height: 120px;
-      background: rgba(255,255,255,0.97);
-      border: 2px solid #b7cbe3;
-      border-radius: 16px;
-      padding: 25px 26px;
-      box-shadow: 0 8px 32px rgba(55,82,108,0.10);
+      grid-template-columns: repeat(2, 1fr); /* 2 columnas para desktop */
+      gap: 25px; /* Espacio uniforme entre elementos */
+      max-width: 600px; /* Ancho máximo consistente con el menú principal */
+      width: 90%; /* Ancho responsivo */
+      background: var(--bg-white);
+      border: 1px solid var(--border-color); /* Borde más sutil */
+      border-radius: 25px; /* Bordes más suaves */
+      padding: 45px; /* Más padding */
+      box-shadow: 0 15px 50px var(--shadow-light); /* Sombra más pronunciada */
+      animation: fadeInUp 0.8s ease-out 0.2s forwards;
+      opacity: 0;
     }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .menu-item {
       border: none;
-      border-radius: 12px;
+      border-radius: 18px; /* Bordes más redondeados */
       display: flex;
+      flex-direction: column; /* Icono y texto apilados */
       align-items: center;
       justify-content: center;
-      font-size: 1.15em;
+      font-size: 1.3em;
       font-weight: 600;
-      background: linear-gradient(120deg, #6dd5ed 0%, #2193b0 100%);
-      color: #fff;
-      min-width: 145px;
-      min-height: 65px;
+      background: linear-gradient(120deg, var(--primary-light) 0%, var(--primary-dark) 100%);
+      color: var(--text-light);
+      min-height: 110px; /* Altura mínima consistente */
       text-align: center;
       text-decoration: none;
-      box-shadow: 0 2px 8px rgba(33,147,176,0.10);
-      transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+      box-shadow: 0 5px 15px var(--button-shadow-color);
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background 0.3s ease;
       cursor: pointer;
     }
     .menu-item:hover {
-      background: linear-gradient(120deg, #2193b0 0%, #6dd5ed 100%);
-      transform: translateY(-4px) scale(1.04);
-      box-shadow: 0 8px 24px rgba(33,147,176,0.18);
+      background: linear-gradient(120deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+      transform: translateY(-8px) scale(1.06); /* Efecto hover pronunciado */
+      box-shadow: 0 12px 30px rgba(33,147,176,0.3);
+    }
+
+    /* Botón de "Volver al Menú Principal" */
+    .back-button-container {
+      margin-top: 50px; /* Espacio superior para separarlo del grid */
+      animation: fadeIn 0.8s ease-out 0.4s forwards;
+      opacity: 0;
+    }
+
+    .btn-back {
+      padding: 14px 28px; /* Padding consistente con otros botones */
+      border: none;
+      border-radius: 12px;
+      background: var(--secondary-button-bg);
+      color: var(--secondary-button-text);
+      border: 1px solid var(--secondary-button-border);
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px var(--secondary-button-shadow);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px; /* Espacio para el icono */
+    }
+    .btn-back:hover {
+      background: var(--secondary-button-hover-bg);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--secondary-button-hover-shadow);
+    }
+
+    /* Estilos para los iconos dentro de los elementos del menú y botones */
+    .menu-item i {
+      font-size: 2em; /* Tamaño del icono para los ítems del menú */
+      margin-bottom: 10px; /* Espacio entre el icono y el texto */
+      color: var(--text-light); /* Color predeterminado para iconos de elementos normales */
+      transition: transform 0.2s ease-out;
+    }
+    .menu-item:hover i {
+      transform: scale(1.1);
+    }
+    .btn-back i {
+      margin-right: 5px; /* Espacio entre el ícono y el texto del botón de volver */
+      color: var(--secondary-button-text);
+    }
+
+    /* Animación para el botón de volver */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Media Queries para responsividad */
+    @media (max-width: 768px) {
+      .main-title {
+        font-size: 2.5em;
+        margin-bottom: 40px;
+      }
+      .menu-grid {
+        grid-template-columns: 1fr; /* Una sola columna en tablets/móviles */
+        padding: 35px;
+        gap: 20px;
+        width: 90%;
+        max-width: 450px;
+      }
+      .menu-item {
+        font-size: 1.2em;
+        min-height: 90px;
+      }
+      .menu-item i {
+        font-size: 1.8em;
+        margin-bottom: 8px;
+      }
+      .back-button-container {
+        margin-top: 40px;
+      }
+      .btn-back {
+        width: 100%; /* El botón ocupa todo el ancho disponible */
+        padding: 12px;
+        justify-content: center; /* Centra el contenido si ocupa todo el ancho */
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      .main-title {
+        font-size: 2em;
+        margin-bottom: 30px;
+      }
+      .menu-grid {
+        padding: 25px;
+        gap: 15px;
+        width: 95%;
+      }
+      .menu-item {
+        font-size: 1.1em;
+        min-height: 80px;
+      }
+      .menu-item i {
+        font-size: 1.6em;
+        margin-bottom: 5px;
+      }
+      .back-button-container {
+        margin-top: 30px;
+      }
     }
   </style>
 </head>
 <body>
 <div class="center-container">
-  <div class="main-title">Menú Clientes</div>
+  <div class="main-title">Gestión de Clientes</div>
   <div class="menu-grid">
-    <a href="ClienteServlet" class="menu-item">Registrar Clientes</a>
-    <a href="ModificarClienteServlet" class="menu-item">Modificar Clientes</a>
+    <a href="<%= request.getContextPath() %>/ClienteServlet" class="menu-item">
+      <i class="fas fa-user-plus"></i> Registrar Clientes
+    </a>
+    <a href="<%= request.getContextPath() %>/ModificarClienteServlet" class="menu-item">
+      <i class="fas fa-user-edit"></i> Modificar Clientes
+    </a>
+  </div>
+  <div class="back-button-container">
+    <a href="<%= request.getContextPath() %>/MenuServlet" class="btn-back">
+      <i class="fas fa-arrow-alt-circle-left"></i> Volver al Menú Principal
+    </a>
   </div>
 </div>
 </body>
