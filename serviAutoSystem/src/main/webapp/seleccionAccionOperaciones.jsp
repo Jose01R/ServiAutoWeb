@@ -76,6 +76,8 @@
       box-shadow: 0 15px 50px var(--shadow-light); /* Sombra más pronunciada */
       animation: fadeInUp 0.8s ease-out 0.2s forwards;
       opacity: 0;
+      /* --- ¡Aquí está el ajuste! --- */
+      justify-content: center; /* Centra los elementos de la cuadrícula si no llenan la fila */
     }
 
     @keyframes fadeInUp {
