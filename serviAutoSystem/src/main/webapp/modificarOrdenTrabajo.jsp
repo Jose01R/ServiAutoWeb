@@ -431,11 +431,7 @@
     <form action="<%= request.getContextPath() %>/ModificarOrdenTrabajoServlet" method="get" class="filter-group">
       <label for="buscarOrden">Buscar por ID o Placa:</label>
       <div style="display: flex; gap: 10px; width: 100%;">
-        <input type="text"
-               id="buscarOrden"
-               name="searchQuery"
-               placeholder="Ej: 0001 o ABC123"
-               value="<%= request.getAttribute("searchQuery") != null ? request.getAttribute("searchQuery") : "" %>">
+        <input type="text" id="buscarOrden" name="searchQuery" placeholder="Ej: 0001 o ABC123" value="<%= request.getAttribute("searchQuery") != null ? request.getAttribute("searchQuery") : "" %>">
         <button type="submit" class="btn-filter">
           <i class="fas fa-search"></i> Buscar
         </button>

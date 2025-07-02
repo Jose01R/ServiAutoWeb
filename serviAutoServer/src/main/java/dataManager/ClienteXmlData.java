@@ -189,4 +189,16 @@ public class ClienteXmlData {
         System.out.println("Error: Cliente con ID '" + idCliente + "' no encontrado para eliminar.");
         return false;
     }
+
+    public List<Cliente> buscarClientesPorIdONombre(String query) {
+        String queryLower = query.toLowerCase();
+        List<Cliente> coincidencias = new ArrayList<>();
+        for (Cliente cliente : getTodosClientes()) {
+            if (cliente.getIdCliente().toLowerCase().contains(queryLower) ||
+                    cliente.getNombre().toLowerCase().contains(queryLower)) {
+                coincidencias.add(cliente);
+            }
+        }
+        return coincidencias;
+    }
 }

@@ -7,6 +7,7 @@ import service.*;
 import org.jdom2.JDOMException;
 import util.XmlPaths;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 import java.util.List;
@@ -87,6 +88,38 @@ public class ProtocolHandler {
                         return new Response("200", "Cliente encontrado", clienteOpt.get());
                     } else {
                         return new Response("404", "Cliente no encontrado", null);
+                    }
+                }
+
+                case "buscarClientesPorIdONombre": {
+                    if (clienteService == null)
+                        return new Response("500", "ClienteService no disponible", null);
+
+                    String query = (String) request.getData();
+                    List<Cliente> resultados = clienteService.buscarClientesPorIdONombre(query);
+                    if (resultados.isEmpty()) {
+                        return new Response("404", "No se encontraron clientes que coincidan con la búsqueda", null);
+                    } else {
+                        return new Response("200", "Clientes encontrados", resultados);
+                    }
+                }
+
+                case "buscarClientes": {
+                    if (clienteService == null)
+                        return new Response("500", "ClienteService no disponible", null);
+
+                    String query = ((String) request.getData()).toLowerCase().trim();
+                    List<Cliente> todos = clienteService.obtenerTodosClientes();
+
+                    List<Cliente> filtrados = todos.stream()
+                            .filter(c -> c.getIdCliente().toLowerCase().contains(query) ||
+                                    c.getNombre().toLowerCase().contains(query))
+                            .toList();
+
+                    if (!filtrados.isEmpty()) {
+                        return new Response("200", "Clientes encontrados", filtrados);
+                    } else {
+                        return new Response("404", "No se encontraron clientes con ese criterio", null);
                     }
                 }
 
@@ -199,9 +232,17 @@ public class ProtocolHandler {
                     if (!(request.getData() instanceof Map)) {
                         return new Response("400", "Datos para orden de trabajo inválidos", null);
                     }
+
                     Map<String, Object> datos = (Map<String, Object>) request.getData();
                     OrdenTrabajo ordenTrabajo = (OrdenTrabajo) datos.get("ordenTrabajo");
                     String placaVehiculo = (String) datos.get("placaVehiculo");
+
+                    // Si el ID está vacío o nulo, lo generamos
+                    if (ordenTrabajo.getIdOrdenTrabajo() == null || ordenTrabajo.getIdOrdenTrabajo().isBlank()) {
+                        String nuevoId = ordenTrabajoService.obtenerNuevoIdOrdenTrabajo();  // <- Debes agregar este método
+                        ordenTrabajo = new OrdenTrabajo(nuevoId, ordenTrabajo.getDescripcionSolicitud(),
+                                ordenTrabajo.getFechaIngreso(), ordenTrabajo.getEstado());
+                    }
 
                     boolean insertado = ordenTrabajoService.agregarOrdenTrabajo(ordenTrabajo, placaVehiculo);
                     if (insertado) {
@@ -229,6 +270,20 @@ public class ProtocolHandler {
                         return new Response("200", "Orden de trabajo encontrada", ordenOpt.get());
                     } else {
                         return new Response("404", "Orden de trabajo no encontrada", null);
+                    }
+                }
+
+                case "buscarOrdenesTrabajo": {
+                    if (ordenTrabajoService == null)
+                        return new Response("500", "OrdenTrabajoService no disponible", null);
+
+                    String query = (String) request.getData();
+                    List<OrdenTrabajo> resultados = ordenTrabajoService.buscarOrdenesTrabajoPorIdOPlaca(query);
+
+                    if (resultados.isEmpty()) {
+                        return new Response("404", "No se encontraron órdenes de trabajo con ese criterio", null);
+                    } else {
+                        return new Response("200", "Órdenes encontradas", resultados);
                     }
                 }
 

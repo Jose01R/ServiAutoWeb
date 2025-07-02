@@ -123,6 +123,8 @@
     </servlet-mapping>
 
 
+
+
     <welcome-file-list>
         <welcome-file>MenuServlet</welcome-file>
     </welcome-file-list>

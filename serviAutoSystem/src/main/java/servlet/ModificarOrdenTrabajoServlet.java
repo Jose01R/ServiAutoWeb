@@ -11,6 +11,8 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModificarOrdenTrabajoServlet extends HttpServlet {
 
@@ -35,12 +37,14 @@ public class ModificarOrdenTrabajoServlet extends HttpServlet {
         if (searchQuery != null && !searchQuery.trim().isEmpty()) {
             Request request = new Request("buscarOrdenesTrabajo", searchQuery.trim());
             Response response = ClienteSocketUtil.enviarRequestAlServidor(request);
+
             if ("200".equals(response.getStatus())) {
                 req.setAttribute("listaOrdenes", response.getData());
                 req.setAttribute("searchQuery", searchQuery);
             } else {
                 req.setAttribute("mensaje", "No se encontraron resultados para la búsqueda");
             }
+
         } else {
             Request request = new Request("obtenerTodasOrdenesTrabajo", null);
             Response response = ClienteSocketUtil.enviarRequestAlServidor(request);

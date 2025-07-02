@@ -1,4 +1,3 @@
-// serviAutoSystem/src/main/java/servlet/ModificarClienteServlet.java
 package servlet;
 
 import jakarta.servlet.ServletException;
@@ -8,7 +7,6 @@ import domain.Request;
 import domain.Response;
 import domain.Cliente;
 import com.serviautoweb.api.serviauto.system.util.ClienteSocketUtil;
-import java.util.List;
 
 public class ModificarClienteServlet extends HttpServlet {
     @Override
@@ -17,7 +15,7 @@ public class ModificarClienteServlet extends HttpServlet {
         String searchQuery = req.getParameter("searchQuery");
 
         if (idCliente != null) {
-            // Lógica existente para cargar un cliente específico
+            // Buscar cliente por ID (para cargar en formulario)
             Request request = new Request("buscarClientePorId", idCliente);
             Response response = ClienteSocketUtil.enviarRequestAlServidor(request);
             if ("200".equals(response.getStatus())) {
@@ -30,18 +28,18 @@ public class ModificarClienteServlet extends HttpServlet {
             }
         }
 
-        // Manejar la búsqueda
         if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            // ✅ Usar la acción correcta: "buscarClientes"
             Request request = new Request("buscarClientes", searchQuery.trim());
             Response response = ClienteSocketUtil.enviarRequestAlServidor(request);
             if ("200".equals(response.getStatus())) {
                 req.setAttribute("listaClientes", response.getData());
-                req.setAttribute("searchQuery", searchQuery); // Mantener el término de búsqueda
+                req.setAttribute("searchQuery", searchQuery);
             } else {
-                req.setAttribute("mensaje", "No se encontraron resultados para la búsqueda");
+                req.setAttribute("mensaje", response.getMessage());
             }
         } else {
-            // Si no hay búsqueda, mostrar todos los clientes
+            // Mostrar todos si no hay búsqueda
             Request request = new Request("obtenerTodosClientes", null);
             Response response = ClienteSocketUtil.enviarRequestAlServidor(request);
             if ("200".equals(response.getStatus())) {
@@ -62,10 +60,9 @@ public class ModificarClienteServlet extends HttpServlet {
             ClienteSocketUtil.enviarRequestAlServidor(request);
             doGet(req, resp);
         } else if ("actualizar".equals(accion)) {
-            // Redirige al formulario de modificación con los datos cargados
+            // Redirige al formulario para modificar
             resp.sendRedirect("ModificarClienteServlet?idCliente=" + idCliente);
         } else if ("guardarModificacion".equals(accion)) {
-            // Guardar los cambios del cliente
             Cliente cliente = new Cliente(
                     idCliente,
                     req.getParameter("nombre"),

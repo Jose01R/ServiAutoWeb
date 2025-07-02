@@ -40,4 +40,8 @@ public class ClienteService {
 
         return clienteXmlData.eliminarCliente(idCliente);
     }
+
+    public List<Cliente> buscarClientesPorIdONombre(String query) {
+        return clienteXmlData.buscarClientesPorIdONombre(query);
+    }
 }

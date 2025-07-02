@@ -113,11 +113,15 @@ public class OrdenTrabajoXmlData {
             ordenActual.setFechaDevolucion(fechaDevolucion);
 
             // Asignar el vehículo - esto implicaría cargar el vehículo por su placa
-            // String placaVehiculo = eOrden.getAttributeValue("placaVehiculo");
-            // VehiculoXmlData vehiculoData = VehiculoXmlData.abrirDocumento("ruta/vehiculos.xml");
-            // vehiculoData.getVehiculoPorPlaca(placaVehiculo).ifPresent(ordenActual::setVehiculo);
+            String placaVehiculo = eOrden.getAttributeValue("placaVehiculo");
+            try {
+                VehiculoXmlData vehiculoData = VehiculoXmlData.abrirDocumento("ruta/vehiculos.xml"); // ajusta ruta real si es necesario
+                vehiculoData.getVehiculoPorPlaca(placaVehiculo).ifPresent(ordenActual::setVehiculo);
+            } catch (Exception e) {
+                System.err.println("Error cargando vehículo con placa: " + placaVehiculo + " - " + e.getMessage());
+            }
 
-            ordenes.add(ordenActual);
+                ordenes.add(ordenActual);
         }
         return ordenes;
     }
@@ -185,5 +189,26 @@ public class OrdenTrabajoXmlData {
         System.out.println("Error: Orden de trabajo con ID '" + idOrdenTrabajo + "' no encontrada para eliminar.");
         return false;
     }
+
+    public String generarNuevoIdOrdenTrabajo() {
+        List<Element> eListaOrdenes = raiz.getChildren(ORDEN_TRABAJO_ELEMENT_NAME);
+        int maxNumero = 0;
+
+        for (Element orden : eListaOrdenes) {
+            String id = orden.getAttributeValue("idOrdenTrabajo");
+            if (id != null && id.startsWith("ORD-")) {
+                try {
+                    int num = Integer.parseInt(id.substring(4));
+                    if (num > maxNumero) {
+                        maxNumero = num;
+                    }
+                } catch (NumberFormatException ignored) {}
+            }
+        }
+
+        int nuevoNumero = maxNumero + 1;
+        return String.format("ORD-%03d", nuevoNumero);
+    }
 }
+
 

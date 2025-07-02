@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OrdenTrabajoServlet extends HttpServlet {
@@ -27,7 +28,6 @@ public class OrdenTrabajoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String id = request.getParameter("idOrdenTrabajo");
             String descripcion = request.getParameter("descripcionSolicitud");
             String fechaIngresoStr = request.getParameter("fechaIngreso");
             String estado = request.getParameter("estado");
@@ -36,7 +36,7 @@ public class OrdenTrabajoServlet extends HttpServlet {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date fechaIngreso = sdf.parse(fechaIngresoStr);
 
-            OrdenTrabajo orden = new OrdenTrabajo(id, descripcion, fechaIngreso, estado);
+            OrdenTrabajo orden = new OrdenTrabajo(null, descripcion, fechaIngreso, estado);
 
             Map<String, Object> datos = new HashMap<>();
             datos.put("ordenTrabajo", orden);

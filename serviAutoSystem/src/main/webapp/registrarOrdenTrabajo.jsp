@@ -282,10 +282,6 @@
         <h2 class="form-title">Registro de Orden de Trabajo</h2>
 
         <div class="form-fields-grid">
-            <div class="form-group">
-                <label for="idOrdenTrabajo">ID de Orden:</label>
-                <input type="text" id="idOrdenTrabajo" name="idOrdenTrabajo" required />
-            </div>
 
             <div class="form-group">
                 <label for="placaVehiculo">Placa del Vehículo:</label>
