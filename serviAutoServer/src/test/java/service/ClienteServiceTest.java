@@ -15,7 +15,7 @@ class ClienteServiceTest {
         Cliente cliente = new Cliente("C001", "Juan", "Perez", "Gomez",
                 "1234567", "7890123", "Calle Falsa 123", "jared@gmail.com");
         try {
-            ClienteService clienteService= new ClienteService("C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\clientes.xml");
+            ClienteService clienteService= new ClienteService("C:\\Users\\Lexis\\Desktop\\Proyecto\\clientes.xml");
             clienteService.agregarCliente(cliente);
         } catch (IOException e) {
             throw new RuntimeException(e);

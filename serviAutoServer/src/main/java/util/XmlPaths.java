@@ -7,10 +7,10 @@ public class XmlPaths {
     //private static final String BASE_PATH = "C:\\Users\\XT\\Documents\\Intellij\\ServiAutoWeb\\";
 
     //RUTA JOSE
-    private static final String BASE_PATH = "C:\\Users\\PC\\Documents\\UCR\\Progra_II\\PROYECTO_II\\";
+    //private static final String BASE_PATH = "C:\\Users\\PC\\Documents\\UCR\\Progra_II\\PROYECTO_II\\";
 
     //RUTA ALEX
-    //private static final String BASE_PATH = "C:\\Users\\PC\\Documents\\UCR\\Progra_II\\PROYECTO_II\\";
+    private static final String BASE_PATH = "C:\\Users\\Lexis\\Desktop\\Proyecto\\";
 
     // Nombres de los archivos XML
     private static final String CLIENTES_FILE = "clientes.xml";

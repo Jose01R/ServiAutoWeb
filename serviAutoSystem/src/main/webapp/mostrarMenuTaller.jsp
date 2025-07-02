@@ -204,7 +204,7 @@
         <a href="<%= request.getContextPath() %>/SeleccionAccionVehiculoServlet" class="menu-item">
             <i class="fas fa-car-side"></i> Vehículo
         </a>
-        <a href="<%= request.getContextPath() %>/OrdenTrabajoServlet" class="menu-item">
+        <a href="<%= request.getContextPath() %>/SeleccionAccionOrdenTrabajoServlet" class="menu-item">
             <i class="fas fa-clipboard-list"></i> Orden de Trabajo
         </a>
         <a href="<%= request.getContextPath() %>/operacionesTecnicas" class="menu-item right-bottom">

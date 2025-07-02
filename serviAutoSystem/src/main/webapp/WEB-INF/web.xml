@@ -95,6 +95,33 @@
         <url-pattern>/detalleOrden</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>OrdenTrabajoServlet</servlet-name>
+        <servlet-class>servlet.OrdenTrabajoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OrdenTrabajoServlet</servlet-name>
+        <url-pattern>/OrdenTrabajoServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ModificarOrdenTrabajoServlet</servlet-name>
+        <servlet-class>servlet.ModificarOrdenTrabajoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ModificarOrdenTrabajoServlet</servlet-name>
+        <url-pattern>/ModificarOrdenTrabajoServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SeleccionAccionOrdenTrabajoServlet</servlet-name>
+        <servlet-class>servlet.SeleccionAccionOrdenTrabajoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SeleccionAccionOrdenTrabajoServlet</servlet-name>
+        <url-pattern>/SeleccionAccionOrdenTrabajoServlet</url-pattern>
+    </servlet-mapping>
+
 
     <welcome-file-list>
         <welcome-file>MenuServlet</welcome-file>

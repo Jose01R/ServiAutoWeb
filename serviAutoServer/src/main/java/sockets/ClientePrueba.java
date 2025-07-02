@@ -9,7 +9,7 @@ import java.net.Socket;
 
 public class ClientePrueba {
     public static void main(String[] args) {
-        String serverIp = "192.168.18.61";
+        String serverIp = "192.168.50.130";
         int serverPort = 5000;
 
         //Usamos ObjectOutputStream y ObjectInputStream para enviar y recibir objetos Java

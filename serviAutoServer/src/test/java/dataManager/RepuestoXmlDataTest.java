@@ -20,7 +20,7 @@ public class RepuestoXmlDataTest {
 
     private static final String TEST_XML_FILE = "test_repuestos.xml";
     private RepuestoXmlData repuestoXmlData;
-    private String PATH = "C:\\Users\\PC\\Documents\\UCR\\test_repuestos.xml";
+    private String PATH = "C:\\Users\\Lexis\\Desktop\\Proyecto\\test_repuestos.xml";
 
 //    @BeforeEach
 //    void setUp() throws IOException {
