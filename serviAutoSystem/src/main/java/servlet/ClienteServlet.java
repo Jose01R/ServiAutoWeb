@@ -58,6 +58,21 @@ public class ClienteServlet extends HttpServlet {
         String celular = request.getParameter("celular");
         String direccion = request.getParameter("direccion");
         String email = request.getParameter("email");
+        if (!idCliente.matches("\\d+")) {
+            request.setAttribute("mensaje", "Error: El ID solo debe contener números.");
+            request.getRequestDispatcher("registrarCliente.jsp").forward(request, response);
+            return;
+        }
+        if (!telefono.matches("\\d+")) {
+            request.setAttribute("mensaje", "Error: El teléfono solo debe contener números.");
+            request.getRequestDispatcher("registrarCliente.jsp").forward(request, response);
+            return;
+        }
+        if (!celular.matches("\\d+")) {
+            request.setAttribute("mensaje", "Error: El celular solo debe contener números.");
+            request.getRequestDispatcher("registrarCliente.jsp").forward(request, response);
+            return;
+        }
         //  Crear objeto Cliente
         Cliente cliente = new Cliente(idCliente, nombre, apellido1, apellido2, telefono, celular, direccion, email);
 

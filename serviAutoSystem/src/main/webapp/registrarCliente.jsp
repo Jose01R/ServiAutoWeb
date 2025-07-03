@@ -283,7 +283,7 @@
         <div class="form-fields-grid">
             <div class="form-group">
                 <label for="idCliente">ID:</label>
-                <input type="text" id="idCliente" name="idCliente" required />
+                <input type="text" id="idCliente" name="idCliente" required pattern="\d+" inputmode="numeric" title="Solo números" />
             </div>
 
             <div class="form-group">
@@ -303,12 +303,12 @@
 
             <div class="form-group">
                 <label for="telefono">Teléfono:</label>
-                <input type="tel" id="telefono" name="telefono" required />
+                <input type="tel" id="telefono" name="telefono" required pattern="\d+" inputmode="numeric" title="Solo números" />
             </div>
 
             <div class="form-group">
                 <label for="celular">Celular:</label>
-                <input type="tel" id="celular" name="celular" required />
+                <input type="tel" id="celular" name="celular" required pattern="\d+" inputmode="numeric" title="Solo números" />
             </div>
 
             <div class="form-group">
