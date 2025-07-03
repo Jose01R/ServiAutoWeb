@@ -4,6 +4,10 @@
 <%
   List<Cliente> clientes = (List<Cliente>) request.getAttribute("listaClientes");
   String mensaje = (String) request.getAttribute("mensaje");
+  // Busca mensajes pasados como parámetro de URL (después de un redirect)
+  if (mensaje == null || mensaje.isEmpty()) {
+    mensaje = request.getParameter("mensaje");
+  }
   boolean isErrorMessage = (mensaje != null && mensaje.toLowerCase().contains("error"));
 %>
 <html>
@@ -35,6 +39,8 @@
       --secondary-button-shadow: rgba(0,0,0,0.08);
       --secondary-button-hover-bg: #e6edf3;
       --secondary-button-hover-shadow: rgba(0,0,0,0.12);
+      --menu-btn-bg: #4CAF50;
+      --menu-btn-hover-bg: #45a049;
     }
 
     body {
@@ -46,7 +52,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start; /* Alinea al inicio para dar espacio al título/mensaje */
+      justify-content: flex-start;
       box-sizing: border-box;
     }
 
@@ -54,7 +60,7 @@
       font-size: 3em;
       font-weight: 800;
       color: var(--text-dark);
-      margin-bottom: 40px; /* Reducido para dejar más espacio al contenido */
+      margin-bottom: 40px;
       letter-spacing: 2px;
       text-shadow: 0 5px 15px rgba(211, 224, 232, 0.8);
       text-align: center;
@@ -67,20 +73,13 @@
     }
 
     .container {
-      width: 95%; /* Más ancho para la tabla */
-      max-width: 1400px; /* Ancho máximo para pantallas muy grandes */
+      width: 95%;
+      max-width: 1400px;
       background: var(--bg-white);
       border-radius: 18px;
       box-shadow: 0 10px 30px var(--shadow-light);
       padding: 40px;
       box-sizing: border-box;
-      animation: fadeInUp 0.8s ease-out 0.2s forwards;
-      opacity: 0;
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     /* Mensajes de feedback */
@@ -94,7 +93,7 @@
       gap: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       width: 100%;
-      max-width: 1400px; /* Coincide con el ancho del contenedor principal */
+      max-width: 1400px;
       box-sizing: border-box;
       animation: fadeIn 0.5s ease-out;
     }
@@ -116,13 +115,13 @@
     /* Filtros y búsqueda */
     .filter-section {
       display: flex;
-      flex-wrap: wrap; /* Permite que los elementos salten de línea */
-      gap: 20px; /* Espacio entre elementos de filtro */
+      flex-wrap: wrap;
+      gap: 20px;
       margin-bottom: 30px;
       padding-bottom: 20px;
       border-bottom: 1px solid var(--border-color);
       width: 100%;
-      justify-content: flex-end; /* Alinea a la derecha por defecto */
+      justify-content: flex-end;
       align-items: center;
     }
 
@@ -130,11 +129,15 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-grow: 1;
+      justify-content: flex-end;
+      flex-wrap: wrap;
     }
 
     .filter-group label {
       color: var(--text-dark);
       font-weight: 500;
+      white-space: nowrap;
     }
 
     .filter-section input[type="text"] {
@@ -144,7 +147,7 @@
       font-size: 0.95em;
       color: var(--text-dark);
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
-      width: 180px; /* Ancho fijo para el input de búsqueda */
+      width: 180px;
     }
     .filter-section input[type="text"]:focus {
       border-color: var(--primary-dark);
@@ -164,6 +167,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      white-space: nowrap;
     }
     .btn-filter:hover {
       background: var(--primary-light);
@@ -173,56 +177,55 @@
     /* Estilos de la tabla */
     .table-wrapper {
       width: 100%;
-      overflow-x: auto; /* Permite el scroll horizontal en tablas grandes */
+      overflow-x: auto;
       margin-bottom: 30px;
       border: 1px solid var(--border-color);
       border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Sombra suave para la tabla */
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     }
 
     table {
       width: 100%;
-      border-collapse: separate; /* Permite el border-radius en la tabla */
+      border-collapse: separate;
       border-spacing: 0;
       background: #fff;
-      min-width: 1000px; /* Asegura un ancho mínimo para evitar compresión */
+      min-width: 1000px;
     }
 
     th, td {
-      padding: 12px 18px; /* Más padding para celdas */
+      padding: 12px 18px;
       text-align: left;
       font-size: 0.95em;
-      border-bottom: 1px solid var(--border-color); /* Borde solo inferior */
-      border-right: 1px solid var(--border-color); /* Borde derecho para separar columnas */
+      border-bottom: 1px solid var(--border-color);
+      border-right: 1px solid var(--border-color);
     }
 
     th {
-      background: var(--accent-light); /* Fondo más suave para el encabezado */
+      background: var(--accent-light);
       font-weight: 700;
       color: var(--text-dark);
       text-align: center;
       position: sticky;
       top: 0;
-      z-index: 1; /* Para que el encabezado sea pegajoso al hacer scroll */
+      z-index: 1;
     }
 
-    /* Quitar borde derecho de la última columna */
     th:last-child, td:last-child {
       border-right: none;
     }
 
     tr:last-child td {
-      border-bottom: none; /* No borde inferior en la última fila */
+      border-bottom: none;
     }
 
     tbody tr:hover {
-      background-color: #f9fbfd; /* Color de fondo al pasar el ratón */
+      background-color: #f9fbfd;
     }
 
     /* Acciones (botones dentro de la tabla) */
     .acciones {
       display: flex;
-      gap: 8px; /* Más espacio entre botones */
+      gap: 8px;
       justify-content: center;
       align-items: center;
     }
@@ -230,10 +233,10 @@
     .btn-action {
       border: none;
       color: white;
-      padding: 8px 12px; /* Ajuste de padding */
-      border-radius: 8px; /* Bordes más suaves */
+      padding: 8px 12px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 0.9em; /* Ligeramente más pequeño para botones de acción */
+      font-size: 0.9em;
       font-weight: 600;
       transition: all 0.2s ease;
       display: inline-flex;
@@ -247,30 +250,63 @@
     }
 
     .btn-modificar {
-      background: var(--modificar-btn); /* Azul */
+      background: var(--modificar-btn);
     }
     .btn-eliminar {
-      background: var(--eliminar-btn); /* Rojo */
+      background: var(--eliminar-btn);
     }
 
-    /* Botón de volver */
-    .back-button-container {
+    /* Contenedor de Botón de volver al menú principal - POSICIONADO FIJO */
+    .button-main-menu-container {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 1000;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      border-radius: 12px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-menu {
+      background: var(--menu-btn-bg);
+      color: var(--text-light);
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      white-space: nowrap;
+    }
+    .btn-menu:hover {
+      background: var(--menu-btn-hover-bg);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+    .btn-menu i {
+      font-size: 1.2em;
+    }
+
+    /* Contenedor del botón "Volver al Menú Clientes" - POSICIONADO AL FINAL DEL CONTENIDO */
+    .button-back-container {
       margin-top: 50px;
       width: 100%;
       max-width: 1400px;
       display: flex;
-      justify-content: flex-start; /* Alinea a la izquierda */
+      justify-content: center;
       animation: fadeIn 0.8s ease-out 0.4s forwards;
-      opacity: 0;
     }
 
     .btn-back {
       padding: 14px 28px;
       border: none;
       border-radius: 12px;
-      background: var(--secondary-button-bg);
-      color: var(--secondary-button-text);
-      border: 1px solid var(--secondary-button-border);
       font-weight: 600;
       cursor: pointer;
       text-decoration: none;
@@ -279,12 +315,16 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      background: var(--secondary-button-bg);
+      color: var(--secondary-button-text);
+      border: 1px solid var(--secondary-button-border);
     }
     .btn-back:hover {
       background: var(--secondary-button-hover-bg);
       transform: translateY(-2px);
       box-shadow: 0 4px 12px var(--secondary-button-hover-shadow);
     }
+
 
     /* Media Queries para Responsividad */
     @media (max-width: 1200px) {
@@ -307,10 +347,15 @@
         font-size: 0.9em;
       }
       .message-box {
-        max-width: 95%; /* Ajusta el ancho del mensaje */
-      }
-      .back-button-container {
         max-width: 95%;
+      }
+      .button-main-menu-container {
+        bottom: 20px;
+        right: 20px;
+      }
+      .btn-menu {
+        padding: 12px 25px;
+        font-size: 0.95em;
       }
     }
 
@@ -328,21 +373,21 @@
         width: 100%;
       }
       .filter-section {
-        flex-direction: column; /* Apila los filtros */
-        align-items: stretch; /* Estira para ocupar el ancho */
+        flex-direction: column;
+        align-items: stretch;
         gap: 15px;
         margin-bottom: 25px;
       }
       .filter-group {
-        flex-direction: column; /* Apila label e input */
+        flex-direction: column;
         align-items: flex-start;
         gap: 5px;
       }
       .filter-section input[type="text"] {
-        width: calc(100% - 24px); /* Ajusta al ancho completo del contenedor */
+        width: calc(100% - 24px);
       }
       .btn-filter {
-        width: 100%; /* Botón de filtro ocupa todo el ancho */
+        width: 100%;
         justify-content: center;
       }
       .table-wrapper {
@@ -354,11 +399,11 @@
         font-size: 0.85em;
       }
       .acciones {
-        flex-direction: column; /* Apila botones de acción */
+        flex-direction: column;
         gap: 5px;
       }
       .btn-action {
-        width: 100%; /* Botones de acción ocupan todo el ancho */
+        width: 100%;
         justify-content: center;
         font-size: 0.8em;
         padding: 6px 10px;
@@ -368,9 +413,22 @@
         margin-bottom: 20px;
         font-size: 0.9em;
       }
-      .back-button-container {
+      .button-main-menu-container {
+        bottom: 15px;
+        right: 15px;
+      }
+      .btn-menu {
+        padding: 10px 20px;
+        font-size: 0.9em;
+        gap: 8px;
+      }
+      .btn-menu i {
+        font-size: 1em;
+      }
+
+      .button-back-container {
         margin-top: 30px;
-        justify-content: center; /* Centra el botón de volver en móviles */
+        align-items: center;
       }
       .btn-back {
         width: 100%;
@@ -406,6 +464,15 @@
         padding: 10px;
         font-size: 0.8em;
       }
+      .btn-menu {
+        padding: 8px 15px;
+        font-size: 0.8em;
+        gap: 5px;
+      }
+      .button-main-menu-container {
+        bottom: 10px;
+        right: 10px;
+      }
       .btn-back {
         padding: 10px 15px;
       }
@@ -428,7 +495,7 @@
   <div class="filter-section">
     <form action="<%= request.getContextPath() %>/ModificarClienteServlet" method="get" class="filter-group">
       <label for="buscarCliente">Buscar por ID o Nombre:</label>
-      <div style="display: flex; gap: 10px; width: 100%;">
+      <div style="display: flex; gap: 10px; width: 100%; flex-wrap: wrap; justify-content: flex-end;">
         <input type="text"
                id="buscarCliente"
                name="searchQuery"
@@ -437,7 +504,7 @@
         <button type="submit" class="btn-filter">
           <i class="fas fa-search"></i> Buscar
         </button>
-        <% if (request.getAttribute("searchQuery") != null) { %>
+        <% if (request.getAttribute("searchQuery") != null && !((String)request.getAttribute("searchQuery")).isEmpty()) { %>
         <a href="<%= request.getContextPath() %>/ModificarClienteServlet"
            class="btn-filter" style="background: var(--error-color);">
           <i class="fas fa-times"></i> Limpiar
@@ -478,7 +545,7 @@
         <td class="acciones">
           <form action="<%= request.getContextPath() %>/ModificarClienteServlet" method="post" style="display:inline;">
             <input type="hidden" name="idCliente" value="<%= cliente.getIdCliente() %>"/>
-            <input type="hidden" name="accion" value="editar"/> <%-- Cambiado a 'editar' para ser más explícito --%>
+            <input type="hidden" name="accion" value="editar"/>
             <button class="btn-action btn-modificar" type="submit">
               <i class="fas fa-edit"></i> Modificar
             </button>
@@ -503,11 +570,12 @@
   </div>
 </div>
 
-<div class="back-button-container">
+<div class="button-back-container">
   <a href="<%= request.getContextPath() %>/SeleccionAccionClienteServlet" class="btn-back">
     <i class="fas fa-arrow-alt-circle-left"></i> Volver al Menú Clientes
   </a>
 </div>
+
 
 <script>
   // Auto-ocultar mensajes de feedback después de unos segundos
@@ -517,7 +585,7 @@
       if (message.textContent.trim() !== '') {
         setTimeout(() => {
           message.style.display = 'none';
-        }, 5000); // Ocultar después de 5 segundos
+        }, 5000);
       }
     });
   };

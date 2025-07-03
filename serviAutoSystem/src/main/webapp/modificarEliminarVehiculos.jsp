@@ -4,7 +4,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     List<Vehiculo> vehiculos = (List<Vehiculo>) request.getAttribute("listaVehiculos");
+    // Check for messages passed via request attribute (direct forward)
     String mensaje = (String) request.getAttribute("mensaje");
+    // Also check for messages passed via URL parameter (after a redirect)
+    if (mensaje == null || mensaje.isEmpty()) {
+        mensaje = request.getParameter("mensaje");
+    }
     boolean isErrorMessage = (mensaje != null && mensaje.toLowerCase().contains("error"));
 %>
 <html>
@@ -75,9 +80,17 @@
             box-shadow: 0 10px 30px var(--shadow-light);
             padding: 40px;
             box-sizing: border-box;
-            animation: fadeInUp 0.8s ease-out 0.2s forwards;
-            opacity: 0;
+            /* Removed initial opacity: 0 and animation to ensure it's always visible by default */
+            /* animation: fadeInUp 0.8s ease-out 0.2s forwards; */
+            /* opacity: 0; */
         }
+
+        /* NEW: Explicitly set opacity for the .container if animation is not removed */
+        .container.animated-content { /* Add this class to your container if you want to keep animation */
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.2s forwards;
+        }
+
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(40px); }
@@ -261,8 +274,15 @@
             max-width: 1400px;
             display: flex;
             justify-content: flex-start;
-            animation: fadeIn 0.8s ease-out 0.4s forwards;
+            /* REVISADO: REMOVED initial opacity and animation to ensure it's always visible by default */
+            /* animation: fadeIn 0.8s ease-out 0.4s forwards; */
+            /* opacity: 0; */
+        }
+
+        /* NEW: Explicitly set opacity for the .back-button-container if animation is not removed */
+        .back-button-container.animated-button { /* Add this class to your back-button-container if you want to keep animation */
             opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.4s forwards;
         }
 
         .btn-back {
@@ -467,7 +487,7 @@
                 <td class="acciones">
                     <form action="<%= request.getContextPath() %>/ModificarEliminarVehiculoServlet" method="post" style="display:inline;">
                         <input type="hidden" name="placa" value="<%= vehiculo.getPlaca() %>"/>
-                        <input type="hidden" name="accion" value="editar"/> <%-- Cambiado a 'editar' --%>
+                        <input type="hidden" name="accion" value="editar"/>
                         <button class="btn-action btn-modificar" type="submit">
                             <i class="fas fa-edit"></i> Modificar
                         </button>
@@ -493,7 +513,7 @@
 </div>
 
 <div class="back-button-container">
-    <a href="<%= request.getContextPath() %>/MenuVehiculoServlet" class="btn-back">
+    <a href="<%= request.getContextPath() %>/SeleccionAccionVehiculoServlet" class="btn-back">
         <i class="fas fa-arrow-alt-circle-left"></i> Volver al Menú Vehículos
     </a>
 </div>
