@@ -222,7 +222,7 @@
   <div class="main-title">Operaciones</div>
   <div class="menu-grid">
     <%-- Usar request.getContextPath() para URLs robustas --%>
-    <a href="<%= request.getContextPath() %>/detalleOrden" class="menu-item">
+    <a href="<%= request.getContextPath() %>/DetalleOrden" class="menu-item">
       <i class="fas fa-clipboard-list"></i> Detalle Orden
     </a>
     <a href="<%= request.getContextPath() %>/repuesto" class="menu-item">

@@ -157,7 +157,6 @@ public class ProtocolHandler {
                     if (detalleOrdenService == null)
                         return new Response("500", "DetalleOrdenService no disponible", null);
 
-                    // Se espera un Map o clase auxiliar con los datos necesarios
                     if (!(request.getData() instanceof Map)) {
                         return new Response("400", "Datos para detalle de orden inválidos", null);
                     }
@@ -166,6 +165,21 @@ public class ProtocolHandler {
                     String idOrdenTrabajo = (String) datos.get("idOrdenTrabajo");
                     String nombreServicio = (String) datos.get("nombreServicio");
                     String nombreRepuesto = (String) datos.get("nombreRepuesto");
+
+                    // Validación robusta para evitar null en atributos XML
+                    if (detalle == null
+                            || detalle.getIdDetalleOrden() == null || detalle.getIdDetalleOrden().trim().isEmpty()
+                            || idOrdenTrabajo == null || idOrdenTrabajo.trim().isEmpty()) {
+                        return new Response("400", "Faltan datos obligatorios para el detalle de orden", null);
+                    }
+                    boolean tieneServicio = nombreServicio != null && !nombreServicio.trim().isEmpty();
+                    boolean tieneRepuesto = nombreRepuesto != null && !nombreRepuesto.trim().isEmpty();
+                    if (tieneServicio && tieneRepuesto) {
+                        return new Response("400", "No puede tener un detalle con servicio y repuesto a la vez", null);
+                    }
+                    if (!tieneServicio && !tieneRepuesto) {
+                        return new Response("400", "Debe indicar nombreServicio o nombreRepuesto", null);
+                    }
 
                     boolean insertado = detalleOrdenService.agregarDetalleOrden(detalle, idOrdenTrabajo, nombreServicio, nombreRepuesto);
                     if (insertado) {
@@ -179,7 +193,11 @@ public class ProtocolHandler {
                     if (detalleOrdenService == null)
                         return new Response("500", "DetalleOrdenService no disponible", null);
 
-                    List<DetalleOrden> detalles = detalleOrdenService.obtenerTodosDetallesOrden();
+                    // Obtener servicios y repuestos para armar bien los detalles
+                    List<Servicio> servicios = servicioService.obtenerTodosServicios();
+                    List<Repuesto> repuestos = repuestoService.obtenerTodosRepuestos();
+
+                    List<DetalleOrden> detalles = detalleOrdenService.obtenerTodosDetallesOrden(servicios, repuestos);
                     return new Response("200", "Lista de detalles de orden", detalles);
                 }
 
@@ -224,6 +242,15 @@ public class ProtocolHandler {
                         return new Response("404", "Detalle de orden no encontrado para eliminar", null);
                     }
                 }
+
+                case "generarIdDetalleOrden": {
+                    if (detalleOrdenService == null)
+                        return new Response("500", "DetalleOrdenService no disponible", null);
+
+                    String nuevoId = detalleOrdenService.generarNuevoIdDetalleOrden();
+                    return new Response("200", "ID generado correctamente", nuevoId);
+                }
+
                 //--------------Orden Trabajo Actions----------------
                 case "agregarOrdenTrabajo": {
                     if (ordenTrabajoService == null)

@@ -12,6 +12,7 @@ public class DetalleOrden implements Serializable {
     private OrdenTrabajo ordenTrabajo; // Relationship with OrdenTrabajo
     private Servicio servicio; // Relationship with Servicio (0..1)
     private Repuesto repuesto; // Relationship with Repuesto (0..1)
+    private String idOrdenTrabajo;
 
     public DetalleOrden(String idDetalleOrden) {
         this.idDetalleOrden = idDetalleOrden;
@@ -43,7 +44,12 @@ public class DetalleOrden implements Serializable {
     public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
     public void setTipoDetalle(String tipoDetalle) { this.tipoDetalle = tipoDetalle; }
     public void setIdEstado(String idEstado) { this.idEstado = idEstado; }
-    public void setOrdenTrabajo(OrdenTrabajo ordenTrabajo) { this.ordenTrabajo = ordenTrabajo; }
+    public void setOrdenTrabajo(OrdenTrabajo ordenTrabajo) {
+        this.ordenTrabajo = ordenTrabajo;
+        if (ordenTrabajo != null) {
+            this.idOrdenTrabajo = ordenTrabajo.getIdOrdenTrabajo();
+        }
+    }
 
     // Special setters for Servicio and Repuesto due to 0..1 relationship and mutual exclusivity
     public void setServicio(Servicio servicio) {
@@ -58,6 +64,20 @@ public class DetalleOrden implements Serializable {
             throw new IllegalStateException("A DetalleOrden cannot have both a Servicio and a Repuesto.");
         }
         this.repuesto = repuesto;
+    }
+
+    public String getIdOrdenTrabajo() {
+        if (idOrdenTrabajo != null && !idOrdenTrabajo.isEmpty()) {
+            return idOrdenTrabajo;
+        }
+        if (ordenTrabajo != null) {
+            return ordenTrabajo.getIdOrdenTrabajo();
+        }
+        return null;
+    }
+
+    public void setIdOrdenTrabajo(String idOrdenTrabajo) {
+        this.idOrdenTrabajo = idOrdenTrabajo;
     }
 
     @Override

@@ -92,7 +92,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>DetalleOrdenServlet</servlet-name>
-        <url-pattern>/detalleOrden</url-pattern>
+        <url-pattern>/DetalleOrden</url-pattern>
     </servlet-mapping>
 
     <servlet>
